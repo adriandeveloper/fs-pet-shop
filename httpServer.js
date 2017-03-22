@@ -19,11 +19,16 @@ let server = http.createServer( (req, res) => {
       });
     } else if (url === '/pets/1' && method === 'GET') {
       res.setHeader('Content-Type', 'application/json');
-      fs.readFile('pets.json', 'utf8', (err, data) => {
-        res.end(data);
-      });
+      // fs.readFile('pets.json', 'utf8', (err, data) => {
+      fs.readFile('pets.json', 'utf8');
+        res.end(pets[0].json);
     } else if (url === '/pets/2' && method === 'GET') {
-      res.setHeader('Content-Type', 'text/plain');
+      res.writeHead(404, {'Content-Type': 'text/plain'});
+      // fs.readFile('pets.json', 'utf8', (err, data) => {
+      res.end('Not Found');
+      // });
+    } else if (url === '/pets/-1' && method === 'GET') {
+      res.writeHead(404, {'Content-Type': 'text/plain'});
       // fs.readFile('pets.json', 'utf8', (err, data) => {
       res.end('Not Found');
       // });
@@ -44,6 +49,10 @@ let server = http.createServer( (req, res) => {
     }
     break;
     case '/pets/2': {
+      getPets(reqURL, reqMethod);
+    }
+    break;
+    case '/pets/-1': {
       getPets(reqURL, reqMethod);
     }
     break;
