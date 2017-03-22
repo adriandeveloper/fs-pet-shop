@@ -18,6 +18,7 @@ let server = http.createServer( (req, res) => {
         res.end(data);
       });
     } else if (url === '/pets/1' && method === 'GET') {
+      // get number from url. Read file, get the index from the user which comes from the url, then display that shit
       res.setHeader('Content-Type', 'application/json');
       // fs.readFile('pets.json', 'utf8', (err, data) => {
       fs.readFile('pets.json', 'utf8');
