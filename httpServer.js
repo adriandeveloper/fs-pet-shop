@@ -4,6 +4,7 @@ const fs = require('fs');
 let server = http.createServer( (req, res) => {
   const reqURL = req.url;
   const reqMethod = req.method;
+  let pets;
 
   // getPets function that handles requests
   const getPets = (url, method) => {
@@ -21,8 +22,11 @@ let server = http.createServer( (req, res) => {
       // get number from url. Read file, get the index from the user which comes from the url, then display that shit
       res.setHeader('Content-Type', 'application/json');
       // fs.readFile('pets.json', 'utf8', (err, data) => {
-      fs.readFile('pets.json', 'utf8');
+      fs.readFile('pets.json', 'utf8', (err, data) => {
+        pets = JSON.parse(data);
         res.end(pets[0].json);
+
+      });
     } else if (url === '/pets/2' && method === 'GET') {
       res.writeHead(404, {'Content-Type': 'text/plain'});
       // fs.readFile('pets.json', 'utf8', (err, data) => {
