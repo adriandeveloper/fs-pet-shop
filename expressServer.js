@@ -1,28 +1,28 @@
-const express = require('express');
-const app = express();
+const express = require('express')();
 const fs = require('fs');
-const Pets = require('./readPets')('pets.json');
-let pets = Pets.petFile;
+// const Pets = require('/.readPets.js')('pets.json');
+let pets;
 
-
-// return object of pets
-app.get('/pets', (req, res) => {
-  pets.then((data) => { res.send(data); });
-});
-
-// get single object from array index. Return not found if the index doesn't exist.
-app.get('/pets/:pet_id', (req, res) => {
-  const id = req.params.pet_id;
-  pets.then((data) => {
-    if (data[id]) {
-      res.send(data[id]);
-    } else {
-      res.send('Invalid ID');
-    }
-   }).catch((err) => {
-    console.log("broke. because.. reasons");
-    res.sendStatus(404);
+// prints out array and objects
+express.get('/pets',  (req, res) => {
+  fs.readFile('pets.json', 'utf8', (err, data) => {
+    pets = JSON.parse(data);
+    res.send(pets);
   });
 });
 
-app.listen(3000, () => {console.log("The server is running"); });
+// filter request by array index
+express.get('/pets/:pet_id', (req, res) => {
+  const id = req.params.pet_id;
+  fs.readFile('pets.json', 'utf8', (err, data) => {
+    pets = JSON.parse(data);
+    if (pets[id] === undefined) {
+      res.sendStatus(404);
+    }
+      res.send(pets[id]);
+  });
+});
+
+express.listen(3000, () => {
+  console.log("Server is up");
+});
