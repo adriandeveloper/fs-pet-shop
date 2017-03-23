@@ -1,36 +1,28 @@
 const express = require('express');
 const app = express();
 const fs = require('fs');
-let pets;
+const Pets = require('./readPets')('pets.json');
+let pets = Pets.petFile;
 
-// read and parse 'pets.json' file
-fs.readFile('pets.json', 'utf8', (err, data) => {
-  pets = JSON.parse(data);
-});
 
-// gets the '/pets' array
+// return object of pets
 app.get('/pets', (req, res) => {
-  res.send(pets);
+  pets.then((data) => { res.send(data); });
 });
 
-// returns a specific pets object by having the user specify the pet's array index
+// get single object from array index. Return not found if the index doesn't exist.
 app.get('/pets/:pet_id', (req, res) => {
   const id = req.params.pet_id;
-  // if the pet index is not available, return 404, else return the object at the specified index
-  if (pets[id] === undefined) {
+  pets.then((data) => {
+    if (data[id]) {
+      res.send(data[id]);
+    } else {
+      res.send('Invalid ID');
+    }
+   }).catch((err) => {
+    console.log("broke. because.. reasons");
     res.sendStatus(404);
-  }
-    res.send(pets[id]);
+  });
 });
 
-// allow the user to add to the 'pets.json' file
-app.post('/pets', (req, res) => {
-  res.send(pets);
-});
-
-
-// use port 3000 to listen for changes
-app.listen(3000, () => {
-  console.log("Your server is running!");
-});
-module.exports = app;
+app.listen(3000, () => {console.log("The server is running"); });
