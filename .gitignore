@@ -153,5 +153,7 @@ GitHub.sublime-settings
 !.vscode/launch.json
 !.vscode/extensions.json
 
+node_modules
+
 # End of https://www.gitignore.io/api/macOS,Sass,OSX,SublimeText,VisualStudioCode,CodeKit,Node
 node_modules

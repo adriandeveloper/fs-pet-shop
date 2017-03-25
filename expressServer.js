@@ -17,7 +17,9 @@ express.get('/pets/:pet_id', (req, res) => {
   fs.readFile('pets.json', 'utf8', (err, data) => {
     pets = JSON.parse(data);
     if (pets[id] === undefined) {
-      res.sendStatus(404);
+      // figure out how to change status code header
+      // res.setStatus(404);
+      res.send('ID not found');
     }
       res.send(pets[id]);
   });
